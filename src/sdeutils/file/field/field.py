@@ -1,4 +1,4 @@
-from src.cast.cast import Cast, NONE, priority
+from sdeutils.file.field.cast.cast import Cast, NONE
 
 
 class Field:
@@ -13,11 +13,10 @@ class Field:
         for value in self.values:
             tp = Cast(value).type
             if tp in self.cast_estimation_dict.keys():
-                self.cast_estimation_dict[tp]['count'] += 1
-                self.cast_estimation_dict[tp]['values'].append(value)
+                self.cast_estimation_dict[tp]["count"] += 1
+                self.cast_estimation_dict[tp]["values"].append(value)
             else:
-                self.cast_estimation_dict[tp] = {'count': 1,
-                                            'values': [value]}
+                self.cast_estimation_dict[tp] = {"count": 1, "values": [value]}
 
     def discrepancy(self):
         cast_list = [c for c in self.cast_estimation_dict.keys() if c != NONE]
@@ -38,5 +37,5 @@ class Field:
     def __str__(self):
         res = []
         for k, v in self.cast_estimation_dict.items():
-            res.append('{}: {}'.format(k, v['count']))
-        return '\n'.join(res)
+            res.append("{}: {}".format(k, v["count"]))
+        return "\n".join(res)
