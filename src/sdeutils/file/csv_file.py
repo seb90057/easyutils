@@ -2,8 +2,7 @@ import csv
 import pandas as pd
 import numpy as np
 import random
-import json
-from src.cast.cast import Cast
+from sdeutils.file.field.cast.cast import Cast
 
 MAX_ROW_NB = 100
 
@@ -14,7 +13,7 @@ class CsvFile:
         self.row_nb = None
         self.df = None
         self.df_sample = None
-        with open(path, errors="ignore", encoding='utf-8-sig') as csv_file:
+        with open(path, errors="ignore", encoding="utf-8-sig") as csv_file:
             sniffer = csv.Sniffer()
             csv_file_lines = csv_file.readlines(100)
             csv_file_sample = "\n".join(csv_file_lines)
@@ -33,10 +32,10 @@ class CsvFile:
 
     def get_basic_info(self):
         res = {}
-        res['has_header'] = self.has_header
-        res['delimiter'] = self.delimiter
-        res['quotechar'] = self.quotechar
-        res['escapechar'] = self.escapechar
+        res["has_header"] = self.has_header
+        res["delimiter"] = self.delimiter
+        res["quotechar"] = self.quotechar
+        res["escapechar"] = self.escapechar
 
         return res
 
@@ -49,13 +48,14 @@ class CsvFile:
             if self.has_header:
                 h = c
             else:
-                h = 'col_{}'
+                h = "col_{}"
                 header_count += 1
             res[h] = {}
-            res[h]['field_name'] = c
-            res[h]['values'] = list(df[c])
-            res[h]['cast_repartition'] = \
-                Cast.cast_list([Cast(elt) for elt in res[h]['values']])
+            res[h]["field_name"] = c
+            res[h]["values"] = list(df[c])
+            res[h]["cast_repartition"] = Cast.cast_list(
+                [Cast(elt) for elt in res[h]["values"]]
+            )
 
         return res
 
@@ -64,8 +64,8 @@ class CsvFile:
             return self.df
         else:
             arg = {"dialect": self.dialect, "error_bad_lines": False}
-            self.df = pd.read_csv(self.path, **arg)\
-                .replace(np.nan, '', regex=True)
+            self.df = pd.read_csv(self.path, **arg)
+            self.df = self.df.replace(np.nan, "", regex=True)
             return self.df
 
     def get_df_sample(self, max_row_nb=MAX_ROW_NB):
@@ -83,29 +83,22 @@ class CsvFile:
         if self.row_nb:
             return self.row_nb
         else:
-            if self.df:
+            if self.df is not None:
                 self.row_nb = len(self.df.index)
             else:
+                h = 0
+                if self.has_header:
+                    h = 1
                 with open(self.path, errors="ignore") as csv_file:
-                    self.row_nb = len(csv_file.readlines())
+                    self.row_nb = len(csv_file.readlines()) - h
         return self.row_nb
 
     def __str__(self):
         attr_dict = self.__dict__
-        attr_to_display = [attr for attr in attr_dict.keys()
-                           if attr not in ['dialect']]
+        all_attr = attr_dict.keys()
+        attr_to_disp = [attr for attr in all_attr if attr not in ["dialect"]]
         res = []
-        for attr in attr_to_display:
-            res.append('{}: {}'.format(attr, attr_dict[attr]))
+        for attr in attr_to_disp:
+            res.append("{}: {}".format(attr, attr_dict[attr]))
 
-        return '\n'.join(res)
-
-
-if __name__ == "__main__":
-    path = \
-        r"C:\Users\sebde\PycharmProjects\easyfile\src\uploads\product_csv.csv"
-    csv_file = CsvFile(path)
-    csv_file.get_df_sample()
-    fields_info = csv_file.get_fields_info()
-
-    print(json.dumps(fields_info, indent=4))
+        return "\n".join(res)
