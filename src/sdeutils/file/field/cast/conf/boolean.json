@@ -1,0 +1,20 @@
+{
+  "1":
+  {
+    "pattern": "^(true|false)$",
+    "comment": "true or false",
+    "method": "bool_true_false"
+  },
+  "2":
+  {
+    "pattern": "^(vrai|faux)$",
+    "comment": "vrai or faux",
+    "method": "bool_vrai_faux"
+  },
+  "3":
+  {
+    "pattern": "^(1|0)$",
+    "comment": "1 or 0",
+    "method": "bool_1_0"
+  }
+}
