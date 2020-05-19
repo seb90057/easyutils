@@ -2,15 +2,21 @@
   "1":
   {
     "pattern": "^[0-9]{4}(0[1-9]{1}|1[0-2]{1})[0-3]{1}[0-9]{1}$",
-    "comment": "date like 20200327"
+    "comment": "date like 20200327",
+    "method": "to_date",
+    "arg": "%Y%m%d"
   },
   "2":{
     "pattern": "^[0-9]{4}(0[1-9]{1}|1[0-2]{1})[0-3]{1}[0-9]{1}[0-9]{6}$",
-    "comment": "date like 20200327000000 with time"
+    "comment": "date like 20200327000000 with time",
+    "method": "to_date",
+    "arg": "%Y%m%d%H%M%S"
   },
   "3":
   {
     "pattern": "^[0-3]?[0-9]/[0-1]?[0-9]/[0-9]{4}$",
-    "comment": "european date like 14/3/2016"
+    "comment": "european date like 14/3/2016",
+    "method": "to_date",
+    "arg": "%d/%m/%Y"
   }
 }

@@ -3,6 +3,6 @@
   {
     "pattern": ".*",
     "comment": "string",
-    "method": "string"
+    "method": "to_string"
   }
 }

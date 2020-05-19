@@ -3,6 +3,6 @@
   {
     "pattern": "^(\\+|-)?([0-9]{1,})(\\.|,)?0{0,}$",
     "comment": "integer",
-    "method": "integer"
+    "method": "to_integer"
   }
 }

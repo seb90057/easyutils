@@ -3,6 +3,6 @@
   {
     "pattern": "^$",
     "comment": "none",
-    "method": "none"
+    "method": "to_none"
   }
 }
