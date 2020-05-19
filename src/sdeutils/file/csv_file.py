@@ -68,6 +68,17 @@ class CsvFile:
             self.df = self.df.replace(np.nan, "", regex=True)
             return self.df
 
+    # def get_df_casted(self):
+    #     arg = {"dialect": self.dialect, "error_bad_lines": False}
+    #     self.df = pd.read_csv(self.path, **arg)
+    #     self.df = self.df.replace(np.nan, "", regex=True)
+    #
+    #     for col in self.df.columns:
+    #         field = Field(list(self.df[col]))
+    #         est_cst = field.estimated_cast
+    #
+    #     return self.df
+
     def get_df_sample(self, max_row_nb=MAX_ROW_NB):
         row_nb = self.get_row_nb()
         df = self.get_df()
@@ -102,3 +113,12 @@ class CsvFile:
             res.append("{}: {}".format(attr, attr_dict[attr]))
 
         return "\n".join(res)
+
+
+if __name__ == "__main__":
+    path = r"C:\Users\sebde\PycharmProjects\monus\data\E1366516.csv"
+    csv_file = CsvFile(path)
+
+    print(csv_file.get_df())
+
+    # df = csv_file.get_df_casted()
