@@ -1,6 +1,7 @@
 import re
 import json
 import pkg_resources
+import datetime
 
 DATE = "DATE"
 INTEGER = "INTEGER"
@@ -62,10 +63,13 @@ class Cast:
         self.type = None
         self.pattern = None
         self.comment = None
+        self.method = None
+        self.arg = None
         for ct in Cast.patterns:
             path = Cast.patterns[ct]["path"]
             Cast.patterns[ct]["pattern_list"] = Cast.load_pattern(path)
         self.cast()
+        self.refined_value = getattr(Cast, self.method)(self.value, self.arg)
 
     def cast(self):
         for t in Cast.cast_list_ordered:
@@ -74,6 +78,8 @@ class Cast:
                 self.type = t
                 self.pattern = res["pattern"]
                 self.comment = res["comment"]
+                self.method = res["method"]
+                self.arg = res.get("arg")
                 break
 
     def __str__(self):
@@ -92,6 +98,11 @@ class Cast:
             pattern_dict = {}
             pattern_dict["pattern"] = re.compile(patterns_dict[p]["pattern"])
             pattern_dict["comment"] = patterns_dict[p]["comment"]
+            pattern_dict["method"] = patterns_dict[p]["method"]
+            try:
+                pattern_dict["arg"] = patterns_dict[p]["arg"]
+            except KeyError:
+                pattern_dict["arg"] = ""
             pattern_list.append(pattern_dict)
         return pattern_list
 
@@ -132,15 +143,36 @@ class Cast:
                 res[ct] = 1
         return res
 
+    @staticmethod
+    def to_date(value, tr):
+        return datetime.datetime.strptime(value, tr)
+
+    @staticmethod
+    def to_integer(value, tr):
+        clean_value = float(str(value).replace(" ", ""))
+        return int(clean_value)
+
+    @staticmethod
+    def to_float(value, tr):
+        clean_value = str(value).replace(" ", "")
+        return float(clean_value)
+
+    @staticmethod
+    def to_boolean(value, tr):
+        if str(value).lower() in ["true", "vrai", "1"]:
+            return True
+        elif str(value).lower() in ["false", "faux", "0"]:
+            return False
+        else:
+            raise Exception
+
+    @staticmethod
+    def to_string(value, tr):
+        return str(value)
+
 
 if __name__ == "__main__":
-    cast_list = [
-        Cast("20200518"),
-        Cast("0000.05"),
-        Cast("10. 30"),
-        Cast("4"),
-        Cast("37"),
-    ]
-    cast_type_list = [cast.type for cast in cast_list]
-    res_cast = Cast.overload_cast(cast_type_list)
-    print(res_cast)
+
+    c = Cast("1")
+
+    print(c)
