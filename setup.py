@@ -6,7 +6,7 @@ with open("requirements/common.txt", "r") as handler:
 setuptools.setup(
     install_requires=install_requirements,
     name="sdeutils",
-    version="0.1.0",
+    version="0.2.0",
     author="SDE",
     description="various utils",
     package_dir={"": "src"},
