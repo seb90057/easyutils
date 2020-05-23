@@ -18,5 +18,12 @@
     "comment": "european date like 14/3/2016",
     "method": "to_date",
     "arg": "%d/%m/%Y"
+  },
+  "4":
+  {
+    "pattern": "^[0-9]{4}-(0[1-9]{1}|1[0-2]{1})-[0-3]{1}[0-9]{1}$",
+    "comment": "date like 2020-03-27",
+    "method": "to_date",
+    "arg": "%Y-%m-%d"
   }
 }
