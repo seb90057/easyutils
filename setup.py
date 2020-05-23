@@ -8,7 +8,7 @@ conf = "sdeutils/file/field/cast/conf"
 setuptools.setup(
     install_requires=install_requirements,
     name="sdeutils",
-    version="0.2.1",
+    version="0.2.2",
     author="SDE",
     description="various utils",
     package_dir={"": "src"},
